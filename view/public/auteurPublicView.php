@@ -49,13 +49,22 @@
                 else:
                 ?>
                 <hr>
-                <h4>Titre News 2</h4>
-                <p>Ici un autre texte de maximum 150 caractères avec un ... <a href="?idarticle=2">Lire la suite</a></p>
-                <h5>Le 2020-01-02 09:11:47</h5>
-                <hr>
-                <h4>Titre News 1</h4>
-                <p>Ici le texte de maximum 150 caractères avec un ... <a href="?idarticle=1">Lire la suite</a></p>
-                <h5>Le 2020-02-01 16:40:22</h5>
+                    <?php
+                    if (isset($error)):
+                        ?>
+                        <h2><?=$error?></h2>
+                    <?php
+                    else:
+                        foreach ($afficheAllNewsByAuthor as $item): ?>
+
+                            <h4><?= $item->gettheNewsTitle() ?></h4>
+                            <p><?= ThenewsManager::cutTheText($item->gettheNewsText(), 150) ?><a
+                                    href="?idarticle=<?= $item->getidtheNews() ?>"> ... Lire la suite</a></p>
+                            <h5>Par <?= $ThenewsManager->selecttheUserLogin($item->getTheUser_idtheUser()) ?> le <?= $item->gettheNewsDate() ?></h5>
+                            <hr>
+                        <?php endforeach;
+                    endif;
+                    ?>
                 <?php
                 endif;
                 ?>

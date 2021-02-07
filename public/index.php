@@ -13,6 +13,8 @@ require_once "../config.php";
 require_once "../model/MyPDO.php";
 require_once "../model/theuser/Theuser.php";
 require_once "../model/theuser/TheuserManager.php";
+require_once "../model/thenews/Thenews.php";
+require_once "../model/thenews/ThenewsManager.php";
 
 // DB's connection
 try{
@@ -20,6 +22,8 @@ try{
 }catch(PDOException $e){
     die($e->getMessage());
 }
+
+$ThenewsManager = new ThenewsManager($myConnect);
 
 // create TheuserManager
 $userManager = new TheuserManager($myConnect);

@@ -44,13 +44,21 @@
                 <p>Pour valider l'affichage et l'effectuer, vous devrez avoir au préalable rempli les modèles <strong>Thenews</strong> (pour l'hydratation et les vérifications avec les setters et l'affichage avec les getters) et <strong>ThenewsManager</strong> (pour la sélection de l'article via son id grâce à une méthode dédiée)</p>
                 <p>La partie <i>// article detail view</i> du <strong>publicController</strong> devra également être modifié</p>
                 <hr>
-                <h4>Titre News 2</h4>
-                <p>Ici le texte complet avec des<br>retours à la ligne <br> automatiques</p>
-                <h5>Par <a href="?idauteur=3">login2</a> le 2020-01-02 09:11:47</h5>
+                <?php
+                if (isset($error)):
+                    ?>
+                    <h2><?=$error?></h2>
+                <?php
+                else:
+                    foreach ($theNews as $item): ?>
 
-                <hr>
-                <a href="#page-top">Retour en haut</a>
-                <hr>
+                        <h4><?= $item->gettheNewsTitle() ?></h4>
+                        <p><?= $item->gettheNewsText() ?></p>
+                        <h5>Par <a href="?idauteur=<?= $item->gettheUser_idtheUser() ?>"> <?= $ThenewsManager->selecttheUserLogin($item->getTheUser_idtheUser()) ?></a> le <?= $item->gettheNewsDate() ?></h5>
+                        <hr>
+                    <?php endforeach;
+                endif;
+                ?>
             </div>
 
         </div>

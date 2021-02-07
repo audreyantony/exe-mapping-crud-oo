@@ -31,6 +31,12 @@ if(isset($_GET['connect'])){
 // article detail view
 if(isset($_GET['idarticle'])&&ctype_digit($_GET['idarticle'])){
     // exercice's action
+    $recupOneNews = $ThenewsManager->soloNewsById($_GET['idarticle']);
+    if(empty($recupOneNews)){
+        $error = "Cette news n'exite pas, ou plus";
+    }else {
+        $theNews[] = new Thenews($recupOneNews);
+    }
 
     // view
     require_once "../view/public/articlePublicView.php";
@@ -56,12 +62,28 @@ if(isset($_GET['idauteur'])&&ctype_digit($_GET['idauteur'])){
 
 
     // exercice's action
+    $recupAllByAuthor = $ThenewsManager->selectTheNewsByAuthor($iduser);
+    if(empty($recupAllByAuthor)){
+        $error = "Pas de news";
+    }else {
+        foreach ($recupAllByAuthor as $item) {
+            $afficheAllNewsByAuthor[] = new Thenews($item);
+        }
+    }
 
     // view
     require_once "../view/public/auteurPublicView.php";
     exit();
 }
 
+$recupAll = $ThenewsManager->readAllNews();
+if(empty($recupAll)){
+    $error = "Pas de news";
+}else {
+    foreach ($recupAll as $item) {
+        $afficheAllNews[] = new Thenews($item);
+    }
+}
 
 // home view
 require_once "../view/public/indexPublicView.php";

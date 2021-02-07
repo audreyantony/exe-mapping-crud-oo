@@ -7,76 +7,123 @@ class Thenews
     private string $theUserLogin;
 
     // EXERCICE créez les autres attributs (noms des champs dans le table "thenews")
-    private int $idNews;
-    private string $titleNews;
-    private string $textNews;
-    private string $dateNews;
+    private int $idtheNews;
+    private string $theNewsTitle;
+    private string $theNewsText;
+    private string $theNewsDate;
+    private int $theUser_idtheUser;
 
     // EXERCICE créez le constructeur
-    public function __construct(array $datas) {
-        if(!empty($datas)){
-            $this->hydratation($datas);
-        }
+    public function __construct(Array $param){
+        $this->hydrate($param);
     }
 
     // EXERCICE créez l'hydratateur
-    private function hydratation(array $values){
-        foreach($values AS $key => $values){
-            $setterName = "set".ucfirst($key);
-            if(method_exists($this, $setterName)){
-                $this->$setterName($values);
+    private function hydrate(Array $datas){
+        foreach($datas as $key => $value){
+            $methodSetters = "set".ucfirst($key);
+            if(method_exists($this,$methodSetters)){
+                $this->$methodSetters($value);
             }
         }
     }
 
     // EXERCICE créez les getters et setters des attributs propre à cette table, n'oubliez pas de protéger les champs avec les setters !
-    public function getIdNews() {
-        return $this->idNews;
+    /**
+     * $idtheNews's getter
+     * @return int
+     */
+    public function getidtheNews() {
+        return $this->idtheNews;
     }
 
-    public function getTitleNews() {
-        return html_entity_decode($this->titleNews,ENT_QUOTES);
+    /**
+     * $theNewsTitle's getter
+     * @return string
+     */
+    public function gettheNewsTitle() {
+        return html_entity_decode($this->theNewsTitle,ENT_QUOTES);
     }
 
-    public function getTextNews() {
-        return html_entity_decode($this->textNews,ENT_QUOTES);
+    /**
+     * $theNewsText's getter
+     * @return string
+     */
+    public function gettheNewsText() {
+        return html_entity_decode($this->theNewsText,ENT_QUOTES);
     }
 
-    public function getDateNews() {
-        return $this->dateNews;
+    /**
+     * $theNewsDate's getter
+     * @return string
+     */
+    public function gettheNewsDate() {
+        return $this->theNewsDate;
     }
 
-    public function setIdNews(int $idNews): void {
-            $this->idNews = $idNews;
+    /**
+     * $theUser_idtheUser's getter
+     * @return int
+     */
+    public function gettheUser_idtheUser() {
+        return html_entity_decode($this->theUser_idtheUser,ENT_QUOTES);
+    }
+
+    /**
+     * $idNews's setter
+     * @param int $idtheNews
+     */
+    public function setidtheNews(int $idtheNews): void {
+            $this->idtheNews = $idtheNews;
         }
 
-    public function setTitleNews(string $titleNews): void {
-        $title = strip_tags(trim($titleNews));
+    /**
+     * $theNewsTitle's setter
+     * @param string $theNewsTitle
+     */
+    public function settheNewsTitle(string $theNewsTitle): void {
+        $title = strip_tags(trim($theNewsTitle));
         if(empty($title)){
             trigger_error("Le titre de l'article ne peut pas être vide, il faut le remplir.",E_USER_NOTICE);
         }elseif (strlen($title)>150){
             trigger_error("Votre titre ne peut pas être trop long, il ne doit pas dépasser les 150 caractères",E_USER_NOTICE);
         }else{
-            $this->titleNews = $title;
+            $this->theNewsTitle = $title;
         }
     }
 
-    public function setTextNews(string $textNews): void {
-        $text = strip_tags(trim($textNews),"<br>,<p>,<div>,<a>,<img>");
+    /**
+     * $theNewsText's setter
+     * @param string $theNewsText
+     */
+    public function settheNewsText(string $theNewsText): void {
+        $text = strip_tags(trim($theNewsText),"<br>,<p>,<div>,<a>,<img>");
         if(empty($text)){
             print("Vous devez renseigner un texte.");
         }else {
-            $this->textNews = $textNews;
+            $this->theNewsText = $theNewsText;
         }
     }
 
-    public function setArticleDateTime(string $dateNews): void {
-        $rgx = preg_grep("/^(\d{4})-(\d{2})-([\d]{2}) (\d{2}):([0-5]{1})([0-9]{1}):([0-5]{1})([0-9]{1})$/",[$dateNews]);
+    /**
+     * $theNewsDate's setter
+     * @param string $theNewsDate
+     */
+    public function settheNewsDate(string $theNewsDate): void {
+        $rgx = preg_grep("/^(\d{4})-(\d{2})-([\d]{2}) (\d{2}):([0-5]{1})([0-9]{1}):([0-5]{1})([0-9]{1})$/",[$theNewsDate]);
         if(empty($rgx)){
             print("Le format de la date n'est pas valide");
         }else {
-            $this->dateNews = $dateNews;
+            $this->theNewsDate = $theNewsDate;
         }
+    }
+
+    /**
+     * $theUser_idtheUser's setter
+     * @param int $theUser_idtheUser
+     */
+    public function settheUser_idtheUser(string $theUser_idtheUser): void {
+        $this->theUser_idtheUser = $theUser_idtheUser;
     }
 
 

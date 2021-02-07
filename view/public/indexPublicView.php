@@ -44,20 +44,27 @@
                 <p>Pour valider l'affichage et l'effectuer, vous devrez avoir au préalable rempli les modèles <strong>Thenews</strong> (pour l'hydratation et les vérifications avec les setters et l'affichage avec les getters) et <strong>ThenewsManager</strong> (pour récupérer leurs articles et leur auteur grâce à une méthode dédiée)</p>
                 <p>La partie <i>// create article</i> de l'<strong>adminController</strong> devra également être modifié</p>
                 <hr>
-                <h4>Titre News 2</h4>
-                <p>Ici un autre texte de maximum 150 caractères avec un ... <a href="?idarticle=2">Lire la suite</a></p>
-                <h5>Par <a href="?idauteur=3">login2</a> le 2020-01-02 09:11:47</h5>
-                <hr>
-                <h4>Titre News 1</h4>
-                <p>Ici le texte de maximum 150 caractères avec un ... <a href="?idarticle=1">Lire la suite</a></p>
-                <h5>Par <a href="?idauteur=7">login</a> le 2020-02-01 16:40:22</h5>
-                <hr>
-                <a href="#page-top">Retour en haut</a>
-                <hr>
+                <?php
+                if (isset($error)):
+                    ?>
+                    <h2><?=$error?></h2>
+                <?php
+                else:
+                    foreach ($afficheAllNews as $item): ?>
+
+                        <h4><?= $item->gettheNewsTitle() ?></h4>
+                        <p><?= ThenewsManager::cutTheText($item->gettheNewsText(), 150) ?><a
+                                href="?idarticle=<?= $item->getidtheNews() ?>"> ... Lire la suite</a></p>
+                        <h5>Par <a href="?idauteur=<?= $item->gettheUser_idtheUser() ?>"> <?= $ThenewsManager->selecttheUserLogin($item->getTheUser_idtheUser()) ?></a> le <?= $item->gettheNewsDate() ?></h5>
+                        <hr>
+                    <?php endforeach;
+                endif;
+                ?>
             </div>
 
         </div>
     </div>
+
 
     <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>

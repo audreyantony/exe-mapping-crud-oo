@@ -27,8 +27,34 @@ class ThenewsManager
         $prepare->execute();
         if($prepare->rowCount()){
             return $prepare->fetch(PDO::FETCH_ASSOC);
+        } else {
+            return [];
         }
-        return [];
+    }
+
+    public function selectTheNewsByAuthor($id): array {
+        $sql = "SELECT * FROM thenews WHERE theUser_idtheUser = $id ORDER BY theNewsDate DESC";
+        $read = $this->db->query($sql);
+        if ($read->rowCount()) {
+            return $read->fetchAll(PDO::FETCH_ASSOC);
+        } else {
+            return [];
+        }
+    }
+
+    public function selecttheUserLogin($id){
+        $sql = "SELECT idtheUser, theUserLogin FROM theuser WHERE idtheUser= ?";
+        $request = $this->db->prepare($sql);
+        try {
+            $request->execute([$id]);
+            if ($request->rowCount()) {
+                $login = $request->fetch(PDO::FETCH_ASSOC);
+                return $login['theUserLogin'];
+            }
+            return [];
+        }catch(PDOException $e){
+            return $e->getMessage();
+        }
     }
 
     public function insertNews(Thenews $item){
@@ -77,5 +103,10 @@ class ThenewsManager
         }else{
             return "Hey, touche pas à ça. Vilain.e";
         }
+    }
+
+    public static function cutTheText(string $text, int $nbChars): string{
+        $cutText = substr($text,0,$nbChars);
+        return $cutText = substr($cutText,0,strrpos($cutText," "));
     }
 }
