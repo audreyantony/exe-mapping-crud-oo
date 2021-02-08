@@ -37,18 +37,12 @@
         <div class="row">
             <div class="col-lg-12 mx-auto">
 
-                <h1>Administration: création d'un article</h1>
+                <h1>Administration: modification d'un article</h1>
                 <hr>
-                <h3>Exercice, c'est ici que vous allez créer le formulaire d'insertion d'articles</h3>
-                <p>Il faut remplacer le formulaire par celui permettant d'ajouter un article</p>
-                <p>Tous les champs de la table 'thenews' doivent être présent dans les "name" de ceux-ci, mise à part "idtheNews" et "theNewsDate" (générés automatiquement en SQL) </p>
-                <p>Il faut un champs caché "theUser_idtheUser" contenant l'id de l'utilisateur connecté (on la récupère par la session)</p>
-                <p>Un utilisateur ne peut poster qu'à son nom!</p>
-                <p>Pour valider l'insertion et l'effectuer, vous devrez avoir au préalable rempli les modèles <strong>Thenews</strong> (pour l'hydratation et les vérifications avec les setters) et <strong>ThenewsManager</strong> (pour l'insertion grâce à une méthode dédiée)</p>
-                <p>La partie <i>// create article</i> de l'<strong>adminController</strong> devra également être modifié</p>
+
                 <?php
                 if(isset($message)):
-                ?>
+                    ?>
                     <button type="button" class="btn btn-warning"><?=$message?></button>
                 <?php
                 endif;
@@ -56,18 +50,20 @@
                 <hr>
                 <form action="" method="post">
                     <div class="form-group">
+                        <input name="idtheNews" value="<?= $_GET['update'] ?>>" type="hidden">
+
                         <label for="theNewsTitle">Titre de la news :</label>
-                        <input name="theNewsTitle" type="text" class="form-control" placeholder="Votre titre"
+                        <input name="theNewsTitle" type="text" class="form-control" value="<?= $theNews->getTheNewsTitle() ?>"
                                required>
                     </div>
                     <div class="form-group">
                         <label for="theNewsText">Texte de la news :</label>
                         <textarea name="theNewsText" class="form-control" cols="20"
-                                  rows="10" placeholder="Votre texte"></textarea>
+                                  rows="10" ><?= $theNews->gettheNewsText() ?></textarea>
                     </div>
                     <div class="form-group">
                         <label for="theNewsDate">Date :</label>
-                        <input name="theNewsDate" type="date" class="form-control" required>
+                        <input name="theNewsDate" type="date" class="form-control" required id="today">
                     </div>
 
                     <input name="theUser_idtheUser" value="<?= $_SESSION['idtheUser'] ?>>" type="hidden">

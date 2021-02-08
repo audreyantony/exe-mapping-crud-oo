@@ -53,7 +53,7 @@
                     foreach ($theNews as $item): ?>
 
                         <h4><?= $item->gettheNewsTitle() ?></h4>
-                        <p><?= $item->gettheNewsText() ?></p>
+                        <p><?= ThenewsManager::nl2br($item->gettheNewsText()) ?></p>
                         <h5>Par <a href="?idauteur=<?= $item->gettheUser_idtheUser() ?>"> <?= $ThenewsManager->selecttheUserLogin($item->getTheUser_idtheUser()) ?></a> le <?= $item->gettheNewsDate() ?></h5>
                         <hr>
                     <?php endforeach;

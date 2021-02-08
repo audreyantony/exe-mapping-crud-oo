@@ -52,14 +52,18 @@
                 <p>Pour afficher les articles, vous devrez avoir au préalable remplir les modèles <strong>Thenews</strong> (pour l'hydratation et les vérifications avec les setters et l'affichage grâce aux getters) et <strong>ThenewsManager</strong> (pour la sélection des articles via l'id de l'utilisateur connecté) </p>
                 <p>La partie <i>// homepage admin view</i> de l'<strong>AdminController</strong> devra également être modifié</p>
                 <hr>
-                <h4>Titre News 2</h4>
-                <p>Ici un autre texte de maximum 150 caractères avec un ... <a href="?idarticle=2">Lire la suite - modifier/supprimer</a></p>
-                <h5>Le 2020-01-02 09:11:47</h5>
-                <hr>
-                <h4>Titre News 1</h4>
-                <p>Ici le texte de maximum 150 caractères avec un ... <a href="?idarticle=1">Lire la suite - modifier/supprimer</a></p>
-                <h5>Le 2020-02-01 16:40:22</h5>
-                <hr>
+                <?php if (!empty($newsOfUser)) :
+                    foreach ($newsOfUser as $item): ?>
+                        <h4><?= $item->getTheNewsTitle() ?></h4>
+                        <p><?= ThenewsManager::cutTheText($item->getTheNewsText(), 150) ?> ... <a
+                                    href="?idarticle=<?= $item->getIdTheNews() ?>">Lire la suite -
+                                modifier/supprimer</a></p>
+                        <h5>Le <?= $item->getTheNewsDate() ?></h5>
+                        <hr>
+                    <?php endforeach;
+                else : ?>
+                    <h3><?= isset($error) ?>></h3>
+                <?php endif; ?>
                 <a href="#page-top">Retour en haut</a>
                 <hr>
             </div>

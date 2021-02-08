@@ -5,9 +5,13 @@ class ThenewsManager
 {
     // EXERCICE créez le manager complet avec la connexion MyPDO en argument et toutes les méthodes nécessaires au CRUD des "thenews"
     private myPDO $db;
+    private $idUser;
 
     public function __construct(myPDO $db) {
         $this->db = $db;
+        if (!empty($_SESSION['idtheUser'])) {
+            $this->idUser = $_SESSION['idtheUser'];
+        }
     }
 
     public function readAllNews(): Array {
@@ -18,6 +22,15 @@ class ThenewsManager
         }else{
             return [];
         }
+    }
+
+    public function readTheNewsForUser(): array {
+        $read = $this->db->query("SELECT * FROM thenews WHERE theUser_idtheUser = $this->idUser ORDER BY theNewsDate DESC");
+        if ($read->rowCount()) {
+            return $read->fetchAll(PDO::FETCH_ASSOC);
+        }
+
+        return [];
     }
 
     public function soloNewsById(int $id): Array{
@@ -58,15 +71,14 @@ class ThenewsManager
     }
 
     public function insertNews(Thenews $item){
-        $sql = "INSERT INTO thenews (idtheNews, theNewsTitle, theNewsText, theNewsDate, theUser_idtheUser) VALUES (?,?,?,?,?); ";
+        $sql = "INSERT INTO thenews (theNewsTitle, theNewsText, theNewsDate, theUser_idtheUser) VALUES (?,?,?,?); ";
         $request = $this->db->prepare($sql);
         try {
             $request->execute([
-                    $item->getIdNews(),
-                    $item->getTitleNews(),
-                    $item->getTextNews(),
-                    $item->getDateNews(),
-                    $item->getTheUserLogin()]
+                    $item->gettheNewsTitle(),
+                    $item->gettheNewsText(),
+                    $item->gettheNewsDate(),
+                    $item->gettheUser_idtheUser()]
             );
             return true;
         } catch (Exception $e){
@@ -85,15 +97,14 @@ class ThenewsManager
         }
     }
 
-    public function updateNewsById(Thenews $news, int $idNews){
-        if($idNews == $news->getIdNews()){
-            $sql = "UPDATE thenews SET theNewsTitle = :titleNews,theNewsText= :textNews,theNewsDate= :dateNews,theUser_idtheUser= :theUserLogin WHERE :idNews";
+    public function updateNewsById(Thenews $item, int $idNews){
+        if($idNews == $item->getidtheNews()){
+            $sql = "UPDATE thenews SET theNewsTitle = :titleNews,theNewsText= :textNews, theNewsDate= :dateNews WHERE idtheNews = :idNews";
             $prepare= $this->db->prepare($sql);
-            $prepare->bindValue("idNews",$news->getIdNews(),PDO::PARAM_INT);
-            $prepare->bindValue("titleNews",$news->getTitleNews(),PDO::PARAM_STR);
-            $prepare->bindValue("textNews",$news->getTextNews(),PDO::PARAM_STR);
-            $prepare->bindValue("dateNews",$news->getDateNews(),PDO::PARAM_STR);
-            $prepare->bindValue("theUserLogin",$news->getTheUserLogin(),PDO::PARAM_STR);
+            $prepare->bindValue("titleNews",$item->gettheNewsTitle(),PDO::PARAM_STR);
+            $prepare->bindValue("textNews",$item->gettheNewsText(),PDO::PARAM_STR);
+            $prepare->bindValue("dateNews",$item->gettheNewsDate(),PDO::PARAM_STR);
+            $prepare->bindValue("idNews",$idNews,PDO::PARAM_INT);
             try{
                 $prepare->execute();
                 return true;
@@ -108,5 +119,9 @@ class ThenewsManager
     public static function cutTheText(string $text, int $nbChars): string{
         $cutText = substr($text,0,$nbChars);
         return $cutText = substr($cutText,0,strrpos($cutText," "));
+    }
+
+    public static function nl2br(string $text): string {
+        return nl2br($text);
     }
 }

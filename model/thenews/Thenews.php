@@ -110,8 +110,8 @@ class Thenews
      * @param string $theNewsDate
      */
     public function settheNewsDate(string $theNewsDate): void {
-        $rgx = preg_grep("/^(\d{4})-(\d{2})-([\d]{2}) (\d{2}):([0-5]{1})([0-9]{1}):([0-5]{1})([0-9]{1})$/",[$theNewsDate]);
-        if(empty($rgx)){
+        $newDate = new DateTime($theNewsDate);
+        if(!(is_object($newDate))){
             print("Le format de la date n'est pas valide");
         }else {
             $this->theNewsDate = $theNewsDate;
@@ -122,7 +122,7 @@ class Thenews
      * $theUser_idtheUser's setter
      * @param int $theUser_idtheUser
      */
-    public function settheUser_idtheUser(string $theUser_idtheUser): void {
+    public function settheUser_idtheUser(int $theUser_idtheUser): void {
         $this->theUser_idtheUser = $theUser_idtheUser;
     }
 

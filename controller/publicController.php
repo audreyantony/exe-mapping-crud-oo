@@ -64,7 +64,7 @@ if(isset($_GET['idauteur'])&&ctype_digit($_GET['idauteur'])){
     // exercice's action
     $recupAllByAuthor = $ThenewsManager->selectTheNewsByAuthor($iduser);
     if(empty($recupAllByAuthor)){
-        $error = "Pas de news";
+        $error = "Pas de news pour cet auteur";
     }else {
         foreach ($recupAllByAuthor as $item) {
             $afficheAllNewsByAuthor[] = new Thenews($item);
@@ -78,7 +78,7 @@ if(isset($_GET['idauteur'])&&ctype_digit($_GET['idauteur'])){
 
 $recupAll = $ThenewsManager->readAllNews();
 if(empty($recupAll)){
-    $error = "Pas de news";
+    $error = "Pas encore de news";
 }else {
     foreach ($recupAll as $item) {
         $afficheAllNews[] = new Thenews($item);
